@@ -14,7 +14,7 @@ const signedToken = (userID) => {
       iss: "TarunSingh",
       sub: userID,
     },
-    keys.JWT_SECRET_KEY,
+    JWT_SECRET_KEY,
     { expiresIn: "1h" }
   );
 };
