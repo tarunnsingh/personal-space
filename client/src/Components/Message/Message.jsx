@@ -1,22 +1,36 @@
-import React from 'react'
+import React from "react";
+import { Alert } from "react-bootstrap";
+import { useRef } from "react";
+import { useState } from "react";
+import styles from "./Message.module.css";
 
-const getStyle =(props) => {
-    let baseClass = "alert "
-    if(props.message.msgError)
-        baseClass = baseClass + "alert-danger"
-    else
-        baseClass = baseClass + "alert-primary"
-    return baseClass + " text-center"
+const getStyle = (props) => {
+  let variant = "primary";
+  if (props.message.msgError) variant = "danger";
+  return variant;
+};
+
+function Message(props) {
+  const [isShown, setIsShown] = useState(true);
+  const shownRef = useRef(true);
+  shownRef.current = true;
+
+  const getTimeOut = () => {
+    setTimeout(() => {
+      setIsShown(!shownRef.current);
+    }, 2000);
+    console.log("isShown: ", isShown);
+  };
+
+  return (
+    <Alert
+      variant={getStyle(props)}
+      className={styles.messageBox}
+      show={isShown}
+    >
+      <p>{props.message.msgBody}</p>
+    </Alert>
+  );
 }
 
-
-
-const Message = (props) => {
-    return (
-        <div className={getStyle(props)} role="alert">
-            {props.message.msgBody}
-        </div>
-    )
-}
-
-export default Message
+export default Message;

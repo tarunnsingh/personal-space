@@ -1,12 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-// const keys = require("./keys");
+const keys = require("./keys");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI; //|| keys.MONGO_URI;
+const MONGODB_URI = keys.MONGODB_URI;
 
 const app = express();
 app.use(cookieParser());

@@ -5,8 +5,8 @@ const passportCongfig = require("../passport");
 const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Todo = require("../models/Todo");
-// const keys = require("../keys");
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY; //|| keys.JWT_SECRET_KEY;
+const keys = require("../keys");
+const JWT_SECRET_KEY = keys.JWT_SECRET_KEY;
 
 const signedToken = (userID) => {
   return JWT.sign(
