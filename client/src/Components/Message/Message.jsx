@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "./Message.module.css";
 
 const getStyle = (props) => {
-  let variant = "primary";
+  let variant = "success";
   if (props.message.msgError) variant = "danger";
   return variant;
 };

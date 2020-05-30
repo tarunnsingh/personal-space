@@ -1,0 +1,8 @@
+.footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100% !important;
+  height: 30px !important ;
+  background: rgba(101, 181, 221, 0.589);
+}

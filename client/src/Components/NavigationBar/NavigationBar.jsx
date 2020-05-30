@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import AuthService from "../../Services/AuthService";
-import styles from "./NavBar.module.css";
+import styles from "./NavigationBar.module.css";
 import cx from "classnames";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Nav, Navbar, Form, FormControl, Button } from "react-bootstrap";
 
 const NavigationBar = (props) => {
@@ -34,7 +36,7 @@ const NavigationBar = (props) => {
     return (
       <>
         <Nav.Link href="/">Home</Nav.Link>
-        <Nav.Link href="/todos">Todos</Nav.Link>
+        <Nav.Link href="/todos">Notes</Nav.Link>
         {user.role === "admin" ? (
           <Nav.Link href="/admin">Admin</Nav.Link>
         ) : null}
@@ -58,9 +60,30 @@ const NavigationBar = (props) => {
         <Nav className="mr-auto">
           {!isAuthenticated ? unAuthenticNavBar() : authenticNavBar()}
         </Nav>
+        {user.username !== "" ? (
+          <Nav className="justify-content-end">
+            <Nav.Item>
+              {" "}
+              <Nav.Link>
+                {" "}
+                <FontAwesomeIcon icon={faUser} />{" "}
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              {" "}
+              <Nav.Link> {user.username} </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        ) : null}
         <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-success">Search</Button>
+          <FormControl
+            type="text"
+            placeholder="To be added..."
+            className="mr-sm-2"
+          />
+          <Button variant="outline-success" disabled>
+            Search
+          </Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>

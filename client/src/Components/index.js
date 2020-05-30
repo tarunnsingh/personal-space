@@ -5,3 +5,4 @@ export { default as Register } from "./Register/Register";
 export { default as Message } from "./Message/Message";
 export { default as Todos } from "./Todos/Todos";
 export { default as Admin } from "./Admin/Admin";
+export { default as Footer } from "./Footer/Footer";

@@ -103,6 +103,35 @@ userRouter.post(
   }
 );
 
+userRouter.delete(
+  "/todo/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findById(req.user._id, (err, document) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ message: { msgBody: "User not found", msgError: true } });
+      } else {
+        document.todos = document.todos.filter((todo) => {
+          if (todo._id !== req.params.id) return todo;
+        });
+        Todo.findByIdAndDelete(req.params.id, (err, document) => {
+          if (err) {
+            res
+              .status(400)
+              .json({ message: { msgBody: "User not found", msgError: true } });
+          } else {
+            res.status(200).json({
+              message: { msgBody: "Successfully Deleted", msgError: false },
+            });
+          }
+        });
+      }
+    });
+  }
+);
+
 userRouter.get(
   "/todos",
   passport.authenticate("jwt", { session: false }),

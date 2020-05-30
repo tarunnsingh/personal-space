@@ -5,17 +5,23 @@ import { AuthContext } from "../../Context/AuthContext";
 import Message from "../Message/Message";
 import { Spinner, Button } from "react-bootstrap";
 import styles from "./Todos.module.css";
+import { faFrownOpen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Todos = (props) => {
   const [todo, setTodo] = useState({ name: "" });
   const [todos, setTodos] = useState([]);
   const [message, setMessage] = useState(null);
   const [todoLoading, setTodoLoading] = useState(false);
+  const [todoListLoading, setTodoListLoading] = useState(false);
+
   const authContext = useContext(AuthContext);
-  //   const loadingRef = useRef(false);
+
   useEffect(() => {
+    setTodoListLoading(true);
     TodoService.getTodos().then((data) => {
       setTodos(data.todos);
+      setTodoListLoading(false);
     });
   }, []);
 
@@ -43,6 +49,28 @@ const Todos = (props) => {
     });
   };
 
+  const handleDelete = (props) => {
+    setTodoListLoading(true);
+    TodoService.deleteTodo(props.todo._id).then((data) => {
+      const { message } = data;
+
+      if (!message.msgError) {
+        TodoService.getTodos().then((data) => {
+          setTodos(data.todos);
+          setMessage(message);
+          setTodoListLoading(false);
+        });
+      } else if (message.msgBody === "Unauthorized") {
+        //IF JWT EXPIRES
+        setMessage(message);
+        authContext.setUser({ username: "", role: "" });
+        authContext.setIsAuthenticated(false);
+      } else {
+        setMessage(message);
+      }
+    });
+  };
+
   const onChange = (e) => {
     setTodo({ name: e.target.value });
   };
@@ -54,12 +82,37 @@ const Todos = (props) => {
 
   return (
     <div>
-      <h5>Add more Todos below:</h5>
-      <ul className="list-group">
-        {todos.map((todo) => {
-          return <TodoItem key={todo._id} todo={todo} />;
-        })}
-      </ul>
+      <h6>Add more Notes below:</h6>
+      {todos.length ? (
+        <h6>{`You have ${todos.length} note(s).`}</h6>
+      ) : (
+        <div>
+          <FontAwesomeIcon icon={faFrownOpen} />
+        </div>
+      )}
+      {!todoListLoading ? (
+        <ul className="list-group">
+          {todos.map((todo) => {
+            return (
+              <TodoItem
+                key={todo._id}
+                todo={todo}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+        </ul>
+      ) : (
+        <div>
+          <Spinner
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="false"
+          />{" "}
+          <span> Getting Todos...</span>
+        </div>
+      )}
       <br />
       <form onSubmit={onSubmit}>
         <label htmlFor="todo">Todo</label>

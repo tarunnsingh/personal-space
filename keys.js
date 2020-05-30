@@ -1,6 +1,7 @@
 let MONGODB_URI = "";
 let JWT_SECRET_KEY = "";
 
+// SUITS HEROKU BUILDS
 if (process.env.NODE_ENV === "production") {
   MONGODB_URI = process.env.MONGODB_URI;
   JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
