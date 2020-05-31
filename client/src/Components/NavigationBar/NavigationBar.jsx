@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import AuthService from "../../Services/AuthService";
 import styles from "./NavigationBar.module.css";
 import cx from "classnames";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Nav, Navbar, Form, FormControl, Button } from "react-bootstrap";
+import { Nav, Navbar, Form, Button } from "react-bootstrap";
+// import { FormControl } from 'react-bootstrap'
 
 const NavigationBar = (props) => {
   const { user, setUser, isAuthenticated, setIsAuthenticated } = useContext(
@@ -42,8 +42,7 @@ const NavigationBar = (props) => {
         ) : null}
         <Button
           type="button"
-          className="btn btn-link nav-item nav-link"
-          variant="light"
+          className={cx(styles.logoutbtn, "btn btn-link nav-item nav-link")}
           onClick={onClickLogoutHandler}
         >
           Logout
@@ -53,7 +52,7 @@ const NavigationBar = (props) => {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar className={styles.navbar} expand="lg">
       <Navbar.Brand href="/">Photos-Daily</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -63,24 +62,18 @@ const NavigationBar = (props) => {
         {user.username !== "" ? (
           <Nav className="justify-content-end">
             <Nav.Item>
-              {" "}
-              <Nav.Link>
-                {" "}
-                <FontAwesomeIcon icon={faUser} />{" "}
+              <Nav.Link href="/userpage">
+                <FontAwesomeIcon icon={faUser} /> {user.username}{" "}
               </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              {" "}
-              <Nav.Link> {user.username} </Nav.Link>
             </Nav.Item>
           </Nav>
         ) : null}
         <Form inline>
-          <FormControl
+          {/* <FormControl
             type="text"
             placeholder="To be added..."
             className="mr-sm-2"
-          />
+          /> */}
           <Button variant="outline-success" disabled>
             Search
           </Button>

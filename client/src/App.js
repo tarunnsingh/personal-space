@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   NavBar,
   Home,
@@ -7,6 +7,7 @@ import {
   Todos,
   Admin,
   Footer,
+  UserPage,
 } from "./Components/index";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import PrivateRoute from "./HOCS/PrivateRoute";
@@ -26,6 +27,11 @@ function App() {
           component={Todos}
         />
         <PrivateRoute path="/admin" roles={["admin"]} component={Admin} />
+        <PrivateRoute
+          path="/userpage"
+          roles={["admin", "user"]}
+          component={UserPage}
+        />
       </div>
       <Footer />
     </Router>

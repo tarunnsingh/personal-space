@@ -20,7 +20,7 @@ const signedToken = (userID) => {
 };
 
 userRouter.post("/register", (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, originalName } = req.body;
   User.findOne({ username }, (err, user) => {
     if (err)
       res
@@ -31,7 +31,7 @@ userRouter.post("/register", (req, res) => {
         .status(400)
         .json({ message: { msgBody: "Username Taken", msgError: true } });
     else {
-      const newUser = new User({ username, password, role });
+      const newUser = new User({ username, password, role, originalName });
       newUser.save((err) => {
         if (err)
           res
@@ -54,12 +54,12 @@ userRouter.post(
   passport.authenticate("local", { session: false }),
   (req, res) => {
     if (req.isAuthenticated()) {
-      const { _id, username, role } = req.user;
+      const { _id, username, role, originalName } = req.user;
       const token = signedToken(_id);
       res.cookie("access_token", token, { httpOnly: true, sameSite: true });
       res.status(200).json({
         isAuthenticated: true,
-        user: { username, role },
+        user: { username, role, originalName },
         message: { msgBody: "Login Succesful", msgError: false },
       });
     }
@@ -116,6 +116,7 @@ userRouter.delete(
         document.todos = document.todos.filter((todo) => {
           if (todo._id !== req.params.id) return todo;
         });
+        document.save();
         Todo.findByIdAndDelete(req.params.id, (err, document) => {
           if (err) {
             res
@@ -166,12 +167,56 @@ userRouter.get(
   }
 );
 
+userRouter.post(
+  "/updateIntro",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    // console.log(req.body);
+    User.findByIdAndUpdate(
+      req.user._id,
+      { userIntro: req.body.introText },
+      { new: true },
+      (err, document) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: { msgBody: "An error occured", msgError: true } });
+        } else {
+          const { username, role, originalName, userIntro } = document;
+          return res.status(200).json({
+            isAuthenticated: true,
+            user: { username, role, originalName, userIntro },
+            message: { msgBody: "Intro Updated Succesfully", msgError: false },
+          });
+        }
+      }
+    );
+  }
+);
+
 userRouter.get(
   "/authenticated",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { username, role } = req.user;
-    res.status(200).json({ isAuthenticated: true, user: { username, role } });
+    const {
+      username,
+      role,
+      originalName,
+      userIntro,
+      createdAt,
+      lastUpdated,
+    } = req.user;
+    res.status(200).json({
+      isAuthenticated: true,
+      user: {
+        username,
+        role,
+        originalName,
+        userIntro,
+        createdAt,
+        lastUpdated,
+      },
+    });
   }
 );
 

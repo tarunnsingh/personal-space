@@ -1,0 +1,5 @@
+.loadingPage {
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 41.5%;
+}

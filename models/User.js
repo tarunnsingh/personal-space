@@ -13,9 +13,27 @@ const UserSchema = new mongoose.Schema({
     min: 6,
     required: true,
   },
+  originalName: {
+    type: String,
+    min: 6,
+    required: true,
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
+  },
+  coverPhotoUrl: {
+    type: String,
+  },
+  userIntro: {
+    type: String,
+    max: 2000,
+  },
+  createdAt: {
+    type: Date,
+  },
+  lastUpdated: {
+    type: Date,
   },
   todos: [
     {
