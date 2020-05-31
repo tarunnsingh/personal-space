@@ -17,7 +17,7 @@ This project is built on MERN Stack deployed [here](https://enigmatic-fjord-7595
 4. Get inside the root directory.
 5. Type `heroku create 'app_name'` to create a new Heroku app. Once done check the Heroku Console. Your app should be listed there.
 6. In the console click on the 'app*name', then click on Settings. Here Click \_Reveal Config Vars*.
-7. Add the following two secrets exactly as given below.
+7. Add the following two secrets exactly as given below.:exclamation:
 
 ```shell
 key: MONGODB_URI, value: 'Your DB connection string from MongoDB'
@@ -34,10 +34,10 @@ key: JWT_SECRET_KEY, value: 'any_secret_key_string'
     `git push heroku master`.
 13. Open the through the URL shown on terminal when the above process completes without any errors.
 
-## Contribute
+## :fire: Contribute
 
 Feel free to open ISSUES and contrbutions via PRs.
 
-### Leave a star if it was helpful.
+### :star: Leave a star if it was helpful.
 
 ### Thank you!
