@@ -10,6 +10,8 @@ import { Redirect } from "react-router-dom";
 import styles from "./LoginGoogle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import dotenv from "dotenv";
+dotenv.config();
 
 const LoginGoogle = (props) => {
   const authContext = useContext(AuthContext);
