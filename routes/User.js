@@ -22,23 +22,29 @@ const signedToken = (userID) => {
 };
 
 userRouter.post("/register", (req, res) => {
-  const { username, password, role, originalName } = req.body;
+  const { username, password, role, originalName, email } = req.body;
   User.findOne({ username }, (err, user) => {
     if (err)
-      res
-        .status(500)
-        .json({ message: { msgBody: "An error occured", msgError: true } });
+      res.status(500).json({
+        message: { msgBody: "An error occured HERE", msgError: true },
+      });
     if (user)
       res
         .status(400)
         .json({ message: { msgBody: "Username Taken", msgError: true } });
     else {
-      const newUser = new User({ username, password, role, originalName });
+      const newUser = new User({
+        username,
+        password,
+        role,
+        originalName,
+        email,
+      });
       newUser.save((err) => {
         if (err)
-          res
-            .status(500)
-            .json({ message: { msgBody: "An error occured", msgError: true } });
+          res.status(500).json({
+            message: { msgBody: "An error occured or HERE", msgError: true },
+          });
         else
           res.status(201).json({
             message: {

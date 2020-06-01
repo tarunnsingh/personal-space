@@ -123,7 +123,6 @@ const Register = (props) => {
             Role:{" "}
           </label>
           <input
-            disabled
             name="role"
             value={user.role}
             type="text"
