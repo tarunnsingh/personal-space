@@ -1,5 +1,3 @@
-import {} from "dotenv/config";
-
 if (process.env.NODE_ENV === "production") {
   module.exports = {
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
