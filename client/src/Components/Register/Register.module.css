@@ -3,3 +3,22 @@
   top: 50%;
   left: 41.5%;
 }
+
+input {
+  margin: 1% auto !important;
+  width: 300px !important;
+}
+
+.container {
+  text-align: center;
+  padding-top: 2%;
+}
+
+.loginbtn {
+  width: 200px;
+  margin: auto;
+}
+
+.googleloginbtn {
+  margin-top: 5% !important;
+}

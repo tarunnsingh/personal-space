@@ -3,6 +3,8 @@ import Message from "../Message/Message";
 import { AuthContext } from "../../Context/AuthContext";
 import AuthService from "../../Services/AuthService";
 import LoginGoogle from "../LoginGoogle/LoginGoogle";
+import styles from "./Login.module.css";
+import cx from "classnames";
 
 const Login = (props) => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -29,7 +31,7 @@ const Login = (props) => {
   };
 
   return (
-    <div>
+    <div className={cx("container", styles.container)}>
       <form onSubmit={onSubmit}>
         <h3>Sign In</h3>
         <label htmlFor="username" className="sr-only">
@@ -52,11 +54,17 @@ const Login = (props) => {
           className="form-control"
           placeholder="Enter Password..."
         />
-        <button className="btn btn-lg btn-primary btn-block" type="submit">
+        <button
+          className={cx(styles.loginbtn, "btn btn-lg btn-primary btn-block")}
+          type="submit"
+        >
           Login
         </button>
       </form>
-      <LoginGoogle props={props} />
+      <span className={styles.googleloginbtn}>
+        OR <LoginGoogle />
+      </span>
+
       {message ? <Message message={message} /> : null}
     </div>
   );

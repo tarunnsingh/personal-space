@@ -307,6 +307,7 @@ userRouter.get(
       userIntro,
       createdAt,
       lastUpdated,
+      coverPhotoUrl,
     } = req.user;
     res.status(200).json({
       isAuthenticated: true,
@@ -317,6 +318,7 @@ userRouter.get(
         userIntro,
         createdAt,
         lastUpdated,
+        coverPhotoUrl,
       },
     });
   }

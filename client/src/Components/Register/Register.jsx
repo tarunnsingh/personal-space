@@ -3,19 +3,18 @@ import Message from "../Message/Message";
 import AuthService from "../../Services/AuthService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import styles from "./Register.module.css";
-import { Button } from "react-bootstrap";
-import GoogleAuthService from "../../Services/GoogleAuthService";
 import LoginGoogle from "../LoginGoogle/LoginGoogle";
+import cx from "classnames";
 
 const Register = (props) => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    role: "",
+    role: "user",
     originalName: "",
     userIntro: "Not Added",
+    email: "",
     coverPhotoUrl: "#",
     createdAt: Date.now(),
     lastUpdated: Date.now(),
@@ -51,18 +50,18 @@ const Register = (props) => {
     });
   };
 
-  const handleGoogleLogin = () => {
-    GoogleAuthService.login().then(() =>
-      console.log("DONE FROM GOOGLE AUTH HANDLER")
-    );
-  };
-
   const resetForm = () => {
-    setUser({ username: "", password: "", role: "", originalName: "" });
+    setUser({
+      username: "",
+      password: "",
+      role: "",
+      originalName: "",
+      email: "",
+    });
   };
 
   return (
-    <div className="conatiner center">
+    <div className={cx("container", styles.container)}>
       {isLoading ? (
         <div className={styles.loadingPage}>
           <p>
@@ -71,12 +70,13 @@ const Register = (props) => {
           </p>
         </div>
       ) : (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className={styles.form}>
           <h3>Register</h3>
           <label htmlFor="username" className="sr-only">
             Username:{" "}
           </label>
           <input
+            required
             name="username"
             value={user.username}
             type="text"
@@ -84,10 +84,23 @@ const Register = (props) => {
             className="form-control"
             placeholder="Enter Username..."
           />
+          <label htmlFor="email" className="sr-only">
+            Email:{" "}
+          </label>
+          <input
+            required
+            name="email"
+            value={user.email}
+            type="text"
+            onChange={onChange}
+            className="form-control"
+            placeholder="Enter Email..."
+          />
           <label htmlFor="password" className="sr-only">
             Password:{" "}
           </label>
           <input
+            required
             name="password"
             value={user.password}
             type="password"
@@ -110,6 +123,7 @@ const Register = (props) => {
             Role:{" "}
           </label>
           <input
+            disabled
             name="role"
             value={user.role}
             type="text"
@@ -117,12 +131,15 @@ const Register = (props) => {
             className="form-control"
             placeholder="Enter Role (Admin/User)"
           />
-          <button className="btn btn-lg btn-primary btn-block" type="submit">
+          <button
+            className={cx(styles.loginbtn, "btn btn-lg btn-primary btn-block")}
+            type="submit"
+          >
             Register
           </button>
         </form>
       )}
-      <span>
+      <span className={styles.googlebutton}>
         OR <LoginGoogle />
       </span>
       {message ? <Message message={message} /> : null}

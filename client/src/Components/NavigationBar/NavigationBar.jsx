@@ -3,21 +3,25 @@ import { AuthContext } from "../../Context/AuthContext";
 import AuthService from "../../Services/AuthService";
 import styles from "./NavigationBar.module.css";
 import cx from "classnames";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Nav, Navbar, Form, Button } from "react-bootstrap";
+import { useState } from "react";
 // import { FormControl } from 'react-bootstrap'
 
 const NavigationBar = (props) => {
   const { user, setUser, isAuthenticated, setIsAuthenticated } = useContext(
     AuthContext
   );
+  const [whileLogout, setWhileLogout] = useState(false);
 
   const onClickLogoutHandler = () => {
+    setWhileLogout(true);
     AuthService.logout().then((data) => {
       if (data.success) {
         setUser(data.user);
         setIsAuthenticated(false);
+        setWhileLogout(false);
       }
     });
   };
@@ -41,12 +45,20 @@ const NavigationBar = (props) => {
           <Nav.Link href="/admin">Admin</Nav.Link>
         ) : null}
         <Nav className="justify-content-end">
-          <Button
-            className={cx(styles.logoutbtn, "btn btn-link nav-item nav-link")}
-            onClick={onClickLogoutHandler}
-          >
-            Logout
-          </Button>
+          {whileLogout ? (
+            <FontAwesomeIcon
+              style={{ fontSize: "30px", margin: "auto", paddingLeft: "5px" }}
+              icon={faSpinner}
+              spin
+            />
+          ) : (
+            <Button
+              className={cx(styles.logoutbtn, "btn btn-link nav-item nav-link")}
+              onClick={onClickLogoutHandler}
+            >
+              Logout
+            </Button>
+          )}
         </Nav>
       </>
     );
@@ -64,7 +76,9 @@ const NavigationBar = (props) => {
           <Nav className="justify-content-end">
             <Nav.Item>
               <Nav.Link href="/userpage">
-                <FontAwesomeIcon icon={faUser} /> {user.username}{" "}
+                {console.log(user.coverPhotoUrl)}
+                <img src={user.coverPhotoUrl} className={styles.avatar} />{" "}
+                {user.username}{" "}
               </Nav.Link>
             </Nav.Item>
           </Nav>
