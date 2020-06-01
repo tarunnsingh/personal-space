@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import {} from "dotenv/config";
 
 if (process.env.NODE_ENV === "production") {
   module.exports = {
