@@ -65,9 +65,9 @@ const UserPage = () => {
         <Card.Img variant="top" />
         <Card.Body>
           <Card.Title>{user.username}</Card.Title>
-          <p>
+          <span>
             <i>{user.originalName}</i>
-          </p>
+          </span>
           <Card.Text>
             {user.userIntro !== "" ? user.userIntro : null}{" "}
             <Button onClick={handleClick} variant="outline-warning" size="sm">

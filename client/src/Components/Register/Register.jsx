@@ -3,7 +3,11 @@ import Message from "../Message/Message";
 import AuthService from "../../Services/AuthService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import styles from "./Register.module.css";
+import { Button } from "react-bootstrap";
+import GoogleAuthService from "../../Services/GoogleAuthService";
+import LoginGoogle from "../LoginGoogle/LoginGoogle";
 
 const Register = (props) => {
   const [user, setUser] = useState({
@@ -43,8 +47,14 @@ const Register = (props) => {
           setIsLoading(false);
           props.history.push("/login");
         }, 2000);
-      }
+      } else setIsLoading(false);
     });
+  };
+
+  const handleGoogleLogin = () => {
+    GoogleAuthService.login().then(() =>
+      console.log("DONE FROM GOOGLE AUTH HANDLER")
+    );
   };
 
   const resetForm = () => {
@@ -52,7 +62,7 @@ const Register = (props) => {
   };
 
   return (
-    <div>
+    <div className="conatiner center">
       {isLoading ? (
         <div className={styles.loadingPage}>
           <p>
@@ -112,6 +122,9 @@ const Register = (props) => {
           </button>
         </form>
       )}
+      <span>
+        OR <LoginGoogle />
+      </span>
       {message ? <Message message={message} /> : null}
     </div>
   );

@@ -7,3 +7,4 @@ export { default as Todos } from "./Todos/Todos";
 export { default as Admin } from "./Admin/Admin";
 export { default as Footer } from "./Footer/Footer";
 export { default as UserPage } from "./UserPage/UserPage";
+export { default as LoginGoogle } from "./LoginGoogle/LoginGoogle";

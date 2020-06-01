@@ -5,8 +5,10 @@ const passportCongfig = require("../passport");
 const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Todo = require("../models/Todo");
-const keys = require("../keys");
-const JWT_SECRET_KEY = keys.JWT_SECRET_KEY;
+const keys = require("../config/keys");
+
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(keys.GOOGLE_CLIENT_ID);
 
 const signedToken = (userID) => {
   return JWT.sign(
@@ -14,7 +16,7 @@ const signedToken = (userID) => {
       iss: "TarunSingh",
       sub: userID,
     },
-    JWT_SECRET_KEY,
+    keys.JWT_SECRET_KEY,
     { expiresIn: "1h" }
   );
 };
@@ -65,6 +67,106 @@ userRouter.post(
     }
   }
 );
+
+userRouter.post("/googlelogin", (req, res) => {
+  const { profileObj, tokenObj } = req.body;
+
+  client
+    .verifyIdToken({
+      idToken: tokenObj.id_token,
+      audience: keys.GOOGLE_CLIENT_ID,
+    })
+    .then((response) => {
+      const { name, picture, email_verified, email } = response.payload;
+      if (email_verified) {
+        User.findOne({ email }).exec((err, user) => {
+          if (err) {
+            res.status(400).json({
+              isAuthenticated: false,
+              user: null,
+              message: {
+                msgBody: "Some error occured while connecting to Google.",
+              },
+              msgError: true,
+            });
+          } else {
+            if (user) {
+              const {
+                _id,
+                username,
+                role,
+                originalName,
+                coverPhotoUrl,
+                userIntro,
+              } = user;
+              const token = signedToken(_id);
+              res.cookie("access_token", token, {
+                httpOnly: true,
+                sameSite: true,
+              });
+              res.status(200).json({
+                isAuthenticated: true,
+                user: {
+                  username,
+                  role,
+                  originalName,
+                  coverPhotoUrl,
+                  userIntro,
+                },
+                message: { msgBody: "Login Succesful", msgError: false },
+              });
+            } else {
+              let password = email + tokenObj.id_token;
+              let username = name.toString().toLowerCase().replace(/ /g, "");
+              const newUser = new User({
+                username,
+                password,
+                originalName: name,
+                coverPhotoUrl: picture,
+                email: email,
+                role: "user",
+              });
+              newUser.save((err, creatdeduser) => {
+                if (err) {
+                  res.status(500).json({
+                    message: {
+                      msgBody: "An error occured on Saving user to DB",
+                      msgError: true,
+                    },
+                  });
+                } else {
+                  const { _id } = creatdeduser;
+                  const token = signedToken(_id);
+                  res.cookie("access_token", token, {
+                    httpOnly: true,
+                    sameSite: true,
+                  });
+                  const {
+                    username,
+                    role,
+                    originalName,
+                    coverPhotoUrl,
+                    userIntro,
+                  } = creatdeduser;
+                  res.status(200).json({
+                    isAuthenticated: true,
+                    user: {
+                      username,
+                      role,
+                      originalName,
+                      coverPhotoUrl,
+                      userIntro,
+                    },
+                    message: { msgBody: "Login Succesful", msgError: false },
+                  });
+                }
+              });
+            }
+          }
+        });
+      }
+    });
+});
 
 userRouter.get(
   "/logout",

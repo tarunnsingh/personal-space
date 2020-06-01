@@ -40,13 +40,14 @@ const NavigationBar = (props) => {
         {user.role === "admin" ? (
           <Nav.Link href="/admin">Admin</Nav.Link>
         ) : null}
-        <Button
-          type="button"
-          className={cx(styles.logoutbtn, "btn btn-link nav-item nav-link")}
-          onClick={onClickLogoutHandler}
-        >
-          Logout
-        </Button>
+        <Nav className="justify-content-end">
+          <Button
+            className={cx(styles.logoutbtn, "btn btn-link nav-item nav-link")}
+            onClick={onClickLogoutHandler}
+          >
+            Logout
+          </Button>
+        </Nav>
       </>
     );
   };

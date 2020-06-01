@@ -2,9 +2,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const User = require("./models/User");
-const keys = require("./keys");
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || keys.JWT_SECRET_KEY;
+const keys = require("./config/keys");
 
+// COOKIE EXTRACTOR FUNCTION
 const cookieExtractor = (req) => {
   let token = null;
   if (req && req.cookies) {
@@ -13,12 +13,20 @@ const cookieExtractor = (req) => {
   return token;
 };
 
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
+});
+
 // used for authorization
 passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: cookieExtractor,
-      secretOrKey: JWT_SECRET_KEY,
+      secretOrKey: keys.JWT_SECRET_KEY,
     },
     (payload, done) => {
       User.findById({ _id: payload.sub }, (err, user) => {
