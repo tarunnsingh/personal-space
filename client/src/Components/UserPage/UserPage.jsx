@@ -21,6 +21,7 @@ const UserPage = () => {
 
   const handleIntroSubmit = (e) => {
     console.log(intro);
+    setMessage(null);
     e.preventDefault();
     const dataToSend = { introText: intro };
     UserUpdateService.updateIntro(dataToSend).then((data) => {

@@ -76,8 +76,11 @@ const NavigationBar = (props) => {
           <Nav className="justify-content-end">
             <Nav.Item>
               <Nav.Link href="/userpage">
-                {console.log(user.coverPhotoUrl)}
-                <img src={user.coverPhotoUrl} className={styles.avatar} />{" "}
+                {user.coverPhotoUrl ? (
+                  <img src={user.coverPhotoUrl} className={styles.avatar} />
+                ) : (
+                  <FontAwesomeIcon icon={faUser} />
+                )}{" "}
                 {user.username}{" "}
               </Nav.Link>
             </Nav.Item>

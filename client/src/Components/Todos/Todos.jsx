@@ -78,6 +78,7 @@ const Todos = (props) => {
   const resetForm = () => {
     setTodo({ name: "" });
     setTodoLoading(false);
+    setMessage(null);
   };
 
   return (

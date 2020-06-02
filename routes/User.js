@@ -6,9 +6,56 @@ const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Todo = require("../models/Todo");
 const keys = require("../config/keys");
+const responseHandler = require("./Errors");
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(keys.GOOGLE_CLIENT_ID);
+
+const GridFsStorage = require("multer-gridfs-storage");
+const multer = require("multer");
+const crypto = require("crypto");
+const path = require("path");
+const mongoose = require("mongoose");
+
+mongoose.connect(
+  keys.MONGODB_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("MongoDB Connected");
+  }
+);
+
+const conn = mongoose.connection;
+
+let gfs;
+conn.once("open", () => {
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: "songs",
+  });
+});
+
+const storage = new GridFsStorage({
+  url: keys.MONGODB_URI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "songs",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+
+const upload = multer({
+  storage,
+});
 
 const signedToken = (userID) => {
   return JWT.sign(
@@ -21,17 +68,77 @@ const signedToken = (userID) => {
   );
 };
 
+userRouter.get("/getsong", (req, res) => {
+  if (!gfs) {
+    console.log("DB ERROR!");
+    return res.status(501).json({
+      message: { msgBody: "Could not get Songs, DB Error!" },
+      msgError: true,
+    });
+  }
+  gfs.find().toArray((err, files) => {
+    if (!files || files.length === 0) {
+      res
+        .status(404)
+        .json({ message: { msgBody: "Songs not Found!" }, msgError: true });
+    } else {
+      const f = files
+        .map((file) => {
+          if (file.contentType === "audio/mpeg") {
+            file.isSong = true;
+            file.isImage = false;
+          } else if (
+            file.contentType === "image/jpeg" ||
+            file.contentType === "image/png"
+          ) {
+            file.isImage = true;
+            file.isSong = false;
+          }
+          return file;
+        })
+        .sort((a, b) => {
+          return (
+            new Date(b["uploadDate"]).getTime() -
+            new Date(a["uploadDate"]).getTime()
+          );
+        });
+
+      res.sendFile({ files: f });
+    }
+  });
+});
+
+userRouter.post(
+  "/uploadsong",
+  [
+    passport.authenticate("jwt", { session: false }),
+    upload.single("singlesong"),
+  ],
+  (req, res) => {
+    console.log(
+      "UPLOADED SONGS: ",
+      res.req.file.originalname,
+      res.req.file.originalName,
+      res.req.file.size,
+      res.req.file.uploadDate
+    );
+    res.status(200).json({
+      message: { msgBody: "File uploaded Successfully!", msgError: false },
+      info: {
+        fileName: res.req.file.originalName,
+        fileSize: res.req.file.size,
+        fileUploadDate: res.req.file.uploadDate,
+        fileType: res.req.file.contentType,
+      },
+    });
+  }
+);
+
 userRouter.post("/register", (req, res) => {
   const { username, password, role, originalName, email } = req.body;
   User.findOne({ username }, (err, user) => {
-    if (err)
-      res.status(500).json({
-        message: { msgBody: "An error occured HERE", msgError: true },
-      });
-    if (user)
-      res
-        .status(400)
-        .json({ message: { msgBody: "Username Taken", msgError: true } });
+    if (err) responseHandler(err, null, null, null, res);
+    if (user) responseHandler(null, null, user, "usernameTaken", res);
     else {
       const newUser = new User({
         username,
@@ -41,17 +148,8 @@ userRouter.post("/register", (req, res) => {
         email,
       });
       newUser.save((err) => {
-        if (err)
-          res.status(500).json({
-            message: { msgBody: "An error occured or HERE", msgError: true },
-          });
-        else
-          res.status(201).json({
-            message: {
-              msgBody: "Account succesfully created",
-              msgError: false,
-            },
-          });
+        if (err) responseHandler(err, "userOnSave", null, null, res);
+        else responseHandler(null, null, null, "createdAcc", res);
       });
     }
   });
@@ -62,7 +160,7 @@ userRouter.post(
   passport.authenticate("local", { session: false }),
   (req, res) => {
     if (req.isAuthenticated()) {
-      const { _id, username, role, originalName } = req.user;
+      const { _id, username, role, originalName, email } = req.user;
       const token = signedToken(_id);
       res.cookie("access_token", token, { httpOnly: true, sameSite: true });
       res.status(200).json({
@@ -87,14 +185,7 @@ userRouter.post("/googlelogin", (req, res) => {
       if (email_verified) {
         User.findOne({ email }).exec((err, user) => {
           if (err) {
-            res.status(400).json({
-              isAuthenticated: false,
-              user: null,
-              message: {
-                msgBody: "Some error occured while connecting to Google.",
-              },
-              msgError: true,
-            });
+            responseHandler(err, null, null, null, res);
           } else {
             if (user) {
               const {

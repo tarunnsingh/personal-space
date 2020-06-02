@@ -1,23 +1,13 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
-const keys = require("./config/keys");
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("tiny"));
-
-mongoose.connect(
-  keys.MONGODB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("MongoDB Connected");
-  }
-);
 
 const userRouter = require("./routes/User");
 app.use("/user", userRouter);
