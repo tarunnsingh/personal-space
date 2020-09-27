@@ -9,7 +9,7 @@ This project is built on MERN Stack deployed [here](https://enigmatic-fjord-7595
 3. Add and Delete Notes.
 4. Auth using Google / FB / Github etc. (To be added).
 
-## Steps to Directly Deploy the APP on HEROKU.
+## Steps to Directly Deploy the APP on HEROKU. :heart:
 
 1. Create an account on Heroku.
 2. Install Heroku CLI and Login through cli.
