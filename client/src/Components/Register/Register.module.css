@@ -22,3 +22,8 @@ input {
 .googleloginbtn {
   margin-top: 5% !important;
 }
+
+.radioButtons {
+  width: 5% !important;
+  margin: 0;
+}

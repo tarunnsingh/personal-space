@@ -10,6 +10,7 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("MongoDB Connected");
+    console.log();
   }
 );
 

@@ -123,6 +123,7 @@ const Register = (props) => {
             Role:{" "}
           </label>
           <input
+            disabled
             name="role"
             value={user.role}
             type="text"
@@ -130,6 +131,15 @@ const Register = (props) => {
             className="form-control"
             placeholder="Enter Role (Admin/User)"
           />
+          {/* <label className={styles.radioButtons}>
+            <input value="user" type="radio" name="role" checked />
+            User
+          </label>
+          <label className={styles.radioButtons}>
+            <input value="admin" type="radio" name="role" disabled />
+            Admin
+          </label> */}
+
           <button
             className={cx(styles.loginbtn, "btn btn-lg btn-primary btn-block")}
             type="submit"
