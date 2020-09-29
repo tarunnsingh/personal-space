@@ -1,5 +1,6 @@
 ## Personal Space
 
+A small social platform replication in the making.
 This project is built on MERN Stack deployed [here](https://enigmatic-fjord-75959.herokuapp.com/).
 
 ## Features
