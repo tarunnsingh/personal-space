@@ -51,8 +51,9 @@ module.exports = {
 };
 ```
 
-5. Save the file.
-6. Stay in the root directory and run `npm install`. This installs server side dependecies.
+5. Save the file.  
+- **[IMPORTANT]** Now go inside the client folder, then go to **src/config**. Copy the same file `localkeys.js` and paste it here.
+6. Comre back to root directory and run `npm install`. This installs server side dependecies.
 7. Go to **client folder** by `cd client` and run `npm install` to install client side dependencies.
 8. Now come back to the root and run `npm start` to run the server. If all goes well, you will get message on console stating _MONGODB Connected_.
 9. Open another terminal and browse inside the client folder and run `npm start` to run the frontend part.
