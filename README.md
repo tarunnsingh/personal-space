@@ -19,6 +19,7 @@ The App utilizes Mongo DB (Atlas) for storage and Google Cloud for Google Auth. 
 
 - **Note: The above steps are quite common and you can simply work them out.**
 - **Still of you are STUCK anywhere, take help from [here](https://medium.com/swlh/creating-connecting-a-mongodb-database-and-node-js-server-to-a-front-end-6a53d400ae6a)**.
+- Also make sure you **white list your IP address** in the Network Access tab of your Cluster. For testing purposes, you can even put 0.0.0.0/0 to allow all requests.[CAUTION]
 
 2. **(Optional)** This step deals with getting Keys for Google Auth. You can skip this step and just add some **random** string in GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the steps below. Otherwise continue with the following:
 
