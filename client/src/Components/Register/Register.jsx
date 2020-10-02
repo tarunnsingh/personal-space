@@ -6,6 +6,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Register.module.css";
 import LoginGoogle from "../LoginGoogle/LoginGoogle";
 import cx from "classnames";
+import { Card } from "react-bootstrap";
 
 const Register = (props) => {
   const [user, setUser] = useState({
@@ -61,7 +62,11 @@ const Register = (props) => {
   };
 
   return (
-    <div className={cx("container", styles.container)}>
+    <Card className={cx("container", styles.container)} 
+    style = {{
+      width: '25rem',
+      marginTop: '3rem'
+    }}>
       {isLoading ? (
         <div className={styles.loadingPage}>
           <p>
@@ -75,7 +80,10 @@ const Register = (props) => {
           <label htmlFor="username" className="sr-only">
             Username:{" "}
           </label>
-          <input
+          <input 
+             style={{
+              marginBottom:'1rem'
+            }} 
             required
             name="username"
             value={user.username}
@@ -88,6 +96,9 @@ const Register = (props) => {
             Email:{" "}
           </label>
           <input
+             style={{
+              marginBottom:'1rem'
+            }} 
             required
             name="email"
             value={user.email}
@@ -99,7 +110,10 @@ const Register = (props) => {
           <label htmlFor="password" className="sr-only">
             Password:{" "}
           </label>
-          <input
+          <input 
+             style={{
+              marginBottom:'1rem'
+            }} 
             required
             name="password"
             value={user.password}
@@ -112,6 +126,9 @@ const Register = (props) => {
             Original Name:{" "}
           </label>
           <input
+             style={{
+              marginBottom:'1rem'
+            }} 
             name="originalName"
             value={user.originalName}
             type="text"
@@ -123,6 +140,9 @@ const Register = (props) => {
             Role:{" "}
           </label>
           <input
+             style={{
+              marginBottom:'1rem'
+            }} 
             disabled
             name="role"
             value={user.role}
@@ -141,18 +161,18 @@ const Register = (props) => {
           </label> */}
 
           <button
-            className={cx(styles.loginbtn, "btn btn-lg btn-primary btn-block")}
+            className={cx(styles.loginbtn, "btn btn-primary btn-block")}
             type="submit"
           >
             Register
           </button>
         </form>
       )}
-      <span className={styles.googlebutton}>
+      <span className={styles.googleloginbtn}>
         OR <LoginGoogle />
       </span>
       {message ? <Message message={message} /> : null}
-    </div>
+    </Card>
   );
 };
 

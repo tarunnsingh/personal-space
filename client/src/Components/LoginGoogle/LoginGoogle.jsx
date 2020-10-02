@@ -34,7 +34,7 @@ const LoginGoogle = (props) => {
   };
 
   const failiureGoogle = () => {
-    console.log("failiureGoogle Triggered");
+    console.log("failureGoogle Triggered");
   };
 
   return (

@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem/TodoItem";
 import TodoService from "../../Services/TodoService";
 import { AuthContext } from "../../Context/AuthContext";
 import Message from "../Message/Message";
-import { Spinner, Button } from "react-bootstrap";
+import { Spinner, Button, ListGroup, Container, Row, Col } from "react-bootstrap";
 import styles from "./Todos.module.css";
 import { faFrownOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +25,7 @@ const Todos = (props) => {
     });
   }, []);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e) => { 
     setTodoLoading(true);
     e.preventDefault();
 
@@ -82,7 +82,11 @@ const Todos = (props) => {
   };
 
   return (
-    <div>
+    <Container style = {{
+      padding:'3rem',
+      marginTop:'3rem',
+      backgroundColor: '#eee'
+    }}>
       <h6>Add more Notes below:</h6>
       {todos.length ? (
         <h6>{`You have ${todos.length} note(s).`}</h6>
@@ -92,7 +96,7 @@ const Todos = (props) => {
         </div>
       )}
       {!todoListLoading ? (
-        <ul className="list-group">
+        <ListGroup>
           {todos.map((todo) => {
             return (
               <TodoItem
@@ -102,7 +106,7 @@ const Todos = (props) => {
               />
             );
           })}
-        </ul>
+        </ListGroup>
       ) : (
         <div>
           <Spinner
@@ -115,6 +119,8 @@ const Todos = (props) => {
         </div>
       )}
       <br />
+      <Row>
+       <Col sm={10}>  
       <form onSubmit={onSubmit}>
         <label htmlFor="todo">Todo</label>
         <input
@@ -125,6 +131,7 @@ const Todos = (props) => {
           value={todo.name}
           className="form-control"
         />
+        
 
         <Button
           type="submit"
@@ -143,9 +150,11 @@ const Todos = (props) => {
           )}
         </Button>
       </form>
+      </Col>
+      </Row>
 
       {message ? <Message message={message} /> : null}
-    </div>
+    </Container>
   );
 };
 

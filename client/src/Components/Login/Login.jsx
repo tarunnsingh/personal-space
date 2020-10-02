@@ -5,6 +5,7 @@ import AuthService from "../../Services/AuthService";
 import LoginGoogle from "../LoginGoogle/LoginGoogle";
 import styles from "./Login.module.css";
 import cx from "classnames";
+import { Card } from "react-bootstrap";
 
 const Login = (props) => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -31,23 +32,31 @@ const Login = (props) => {
   };
 
   return (
-    <div className={cx("container", styles.container)}>
+    <Card className={cx("container", styles.container)} 
+    style={{ 
+      width: '25rem',
+      marginTop: '3rem'
+      }}>
       <form onSubmit={onSubmit}>
         <h3>Sign In</h3>
         <label htmlFor="username" className="sr-only">
           Username:{" "}
         </label>
-        <input
+        <input style={{
+          marginBottom:'1rem'
+        }} 
           name="username"
           type="text"
           onChange={onChange}
-          className="form-control"
+          className="form-control" 
           placeholder="Enter Username..."
         />
         <label htmlFor="password" className="sr-only">
           Password:{" "}
         </label>
-        <input
+        <input style={{
+          marginBottom:'1rem'
+        }}
           name="password"
           type="password"
           onChange={onChange}
@@ -55,7 +64,7 @@ const Login = (props) => {
           placeholder="Enter Password..."
         />
         <button
-          className={cx(styles.loginbtn, "btn btn-lg btn-primary btn-block")}
+          className={cx(styles.loginbtn, "btn btn-primary ")}
           type="submit"
         >
           Login
@@ -66,7 +75,7 @@ const Login = (props) => {
       </span>
 
       {message ? <Message message={message} /> : null}
-    </div>
+    </Card>
   );
 };
 
