@@ -32,7 +32,7 @@ passport.use(
       User.findById({ _id: payload.sub }, (err, user) => {
         if (err) return done(err, false);
         if (user) return done(null, user);
-        else return null, false;
+        else return done(null, false);
       });
     }
   )
