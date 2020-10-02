@@ -57,7 +57,6 @@ class SongsUploadBox extends Component {
           name={"singlesong"}
           allowReorder={true}
           instantUpload={false}
-          stylePanelLayout={"integrated"}
           labelIdle={
             'Drag & Drop your Songs or <span class="filepond--label-action"> Browse </span>'
           }

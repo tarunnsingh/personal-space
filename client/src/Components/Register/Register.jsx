@@ -143,7 +143,7 @@ const Register = (props) => {
              style={{
               marginBottom:'1rem'
             }} 
-            disabled
+            
             name="role"
             value={user.role}
             type="text"
