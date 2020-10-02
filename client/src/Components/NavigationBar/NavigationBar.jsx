@@ -92,7 +92,7 @@ const NavigationBar = (props) => {
             placeholder="To be added..."
             className="mr-sm-2"
           /> */}
-          <Button variant="outline-success" disabled>
+          <Button variant="outline-dark" disabled>
             Search
           </Button>
         </Form>

@@ -1,15 +1,21 @@
 import React from "react";
-import { Card, Button, Container, Row } from "react-bootstrap";
-import styles from "./TodoItem.module.css";
+import { Card, Button, Container, Row, ListGroup, Col } from "react-bootstrap";
+// import styles from "./TodoItem.module.css";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TodoItem = (props) => {
-  return (
-    <Container className={styles.card}>
-      <Row>
-        <Card.Body>{props.todo.name}</Card.Body>
+  return ( 
+        <Row>
+        <Col sm = {10}>  
+        <ListGroup.Item style={{
+          marginBottom:'1rem'
+        }}>{props.todo.name}</ListGroup.Item>
+        </Col>
         <Button
+          style={{
+            marginBottom:'1rem'
+          }}
           variant="outline-danger"
           size="sm"
           onClick={() => {
@@ -19,8 +25,7 @@ const TodoItem = (props) => {
           {" "}
           <FontAwesomeIcon icon={faTrash} />
         </Button>
-      </Row>
-    </Container>
+        </Row>
   );
 };
 
