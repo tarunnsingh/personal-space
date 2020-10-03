@@ -77,7 +77,11 @@ const NavigationBar = (props) => {
             <Nav.Item>
               <Nav.Link href="/userpage">
                 {user.coverPhotoUrl ? (
-                  <img src={user.coverPhotoUrl} className={styles.avatar} />
+                  <img
+                    src={user.coverPhotoUrl}
+                    alt=""
+                    className={styles.avatar}
+                  />
                 ) : (
                   <FontAwesomeIcon icon={faUser} />
                 )}{" "}
