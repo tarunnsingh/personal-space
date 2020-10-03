@@ -1,9 +1,9 @@
-## Personal Space
+## :house: Personal Space 
 
 A small social platform replication in the making.
 This project is built on MERN Stack deployed [here](https://enigmatic-fjord-75959.herokuapp.com/).
 
-## Features
+## :sparkles: Features 
 
 1. Authentication and Authorization using PassportJS and JSON Web Tokens.
 2. Customized personal profile page.
@@ -11,7 +11,7 @@ This project is built on MERN Stack deployed [here](https://enigmatic-fjord-7595
 4. Auth using Google.
 5. Upload Media (Admin Only).
 
-## Steps for Running the App Locally.
+## :footprints: Steps for Running the App Locally.
 
 The App utilizes Mongo DB (Atlas) for storage and Google Cloud for Google Auth. Both of these require some private keys.
 
